@@ -1,0 +1,13 @@
+---
+
+openntpd_configure_config:
+  listen_on:
+    any:
+      address: "*"
+  servers:
+    ptbtim1.ptb.de:
+      address: "ptbtime1.ptb.de"
+    ptbtime2.ptb.de:
+      address: "ptbtime2.ptb.de"
+    ptbtime3.ptb.de:
+      address: "ptbtime3.ptb.de"

@@ -1,0 +1,7 @@
+---
+
+- hosts: "{{ hosts_group | default('all') }}"
+  vars_files:
+    - 'example-vars.yml'
+  roles:
+    - "{{ role_name | default('ansible-openntpd') }}"

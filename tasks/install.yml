@@ -1,0 +1,11 @@
+---
+
+- name: install packages
+  apt: >
+    name="{{ item }}"
+    update_cache="{{ openntpd_install_apt_update_cache|default(omit) }}"
+    cache_valid_time="{{ openntpd_install_apt_cache_valid_time|default(omit) }}"
+    state="{{ openntpd_install_apt_state }}"
+    default_release="{{ openntpd_install_apt_default_release }}"
+  with_items:
+    - "{{ openntpd_install_apt_packages }}"

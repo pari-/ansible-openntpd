@@ -1,0 +1,34 @@
+#jinja2: trim_blocks: "true", lstrip_blocks: "true"
+{{ '#' }} {{ ansible_managed }}
+{% if openntpd_configure_config['listen_on'] is defined %}
+{% if openntpd_configure_config['listen_on'] is iterable %}
+{% for listen_on in openntpd_configure_config['listen_on']|sort %}
+{{ '#'}} {{ listen_on }}
+listen on {{ openntpd_configure_config['listen_on'][listen_on]['address'] }} rtable {{ openntpd_configure_config['listen_on'][listen_on]['rtable']|default(openntpd_configure_config_defaults['rtable']) }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if openntpd_configure_config['server'] is defined %}
+{% if openntpd_configure_config['server'] is iterable %}
+{% for server in openntpd_configure_config['server']|sort %}
+{{ '#'}} {{ server }}
+server {{ openntpd_configure_config['server'][server]['address'] }} weight {{ openntpd_configure_config['server'][server]['weight']|default(openntpd_configure_config_defaults['weight']['server']) }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if openntpd_configure_config['servers'] is defined %}
+{% if openntpd_configure_config['servers'] is iterable %}
+{% for servers in openntpd_configure_config['servers']|sort %}
+{{ '#'}} {{ servers }}
+servers {{ openntpd_configure_config['servers'][servers]['address'] }} weight {{ openntpd_configure_config['servers'][servers]['weight']|default(openntpd_configure_config_defaults['weight']['servers']) }}
+{% endfor %}
+{% endif %}
+{% endif %}
+{% if openntpd_configure_config['sensor'] is defined %}
+{% if openntpd_configure_config['sensor'] is iterable %}
+{% for sensor in openntpd_configure_config['sensor']|sort %}
+{{ '#'}} {{ sensor }}
+sensor {{ openntpd_configure_config['sensor'][sensor]['device'] }} correction {{ openntpd_configure_config['sensor'][sensor]['correction']|default(openntpd_configure_config_defaults['correction']) }} weight {{ openntpd_configure_config['sensor'][sensor]['weight']|default(openntpd_configure_config_defaults['weight']['sensor']) }} refid {{ openntpd_configure_config['sensor'][sensor]['refid']|default(openntpd_configure_config_defaults['refid']) }} stratum {{ openntpd_configure_config['sensor'][sensor]['stratum']|default(openntpd_configure_config_defaults['stratum']) }}
+{% endfor %}
+{% endif %}
+{% endif %}
