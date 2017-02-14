@@ -16,7 +16,7 @@ Ansible version in use for development: 2.2.0
      - { role: openntpd }
 ```
 
-In addition to that, you'll have to supply a `openntpd_configure_config`-dict, though (see below).
+In addition to that, you'll have to supply an `openntpd_configure_config`-dict, though (see below).
 
 ## Role Variables
 
@@ -119,9 +119,9 @@ openntpd_configure_config:
 >
 > `['openntpd']`
 
-### configure
+#### configure
 
-- `openntpd_configure_config_template_dest`
+- `openntpd_configure_template_dest`
 
   > Path of OpenNTPd's configuration file.
   >

@@ -25,7 +25,7 @@ openntpd_install_apt_default_release: "jessie-backports"
 #
 # configure
 #
-openntpd_configure_config_template_dest: "/etc/openntpd/ntpd.conf"
+openntpd_configure_template_dest: "/etc/openntpd/ntpd.conf"
 openntpd_configure_service_name: "openntpd"
 openntpd_configure_config_defaults:
   weight:

@@ -1,5 +1,6 @@
 #jinja2: trim_blocks: "true", lstrip_blocks: "true"
 {{ '#' }} {{ ansible_managed }}
+
 {% if openntpd_configure_config['listen_on'] is defined %}
 {% if openntpd_configure_config['listen_on'] is iterable %}
 {% for listen_on in openntpd_configure_config['listen_on']|sort %}

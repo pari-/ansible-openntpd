@@ -3,6 +3,6 @@
 - name: generate configuration file
   template: >
     src="etc/openntpd/ntpd.conf.j2"
-    dest="{{ openntpd_configure_config_template_dest }}"
+    dest="{{ openntpd_configure_template_dest }}"
   notify:
-    - restart {{ openntpd_configure_service_name }}
+    - restart openntpd
