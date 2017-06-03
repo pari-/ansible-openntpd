@@ -1,22 +1,14 @@
 ---
 
 - name: fail unless we run on a supported distribution
-  fail: >
-    msg="Unfortunately, the 'openntpd'-role is not supported on {{ ansible_distribution_release }}! :-("
-  when: ansible_distribution_release|lower not in openntpd_prerequisites_supported_distribution_releases
+  fail:
+    msg: "Unfortunately, the 'openntpd'-role is not supported on {{ ansible_distribution_release }}! :-("
+  when: ansible_distribution_release|lower not in openntpd_supported_distro_list
 
-- name: add additional repositories
-  apt_repository: >
-    repo="{{ item }}"
-    state="{{ openntpd_prerequisites_apt_repository_state }}"
+- name: install prerequisite packages
+  apt:
+    default_release: "{{ openntpd_pre_default_release }}"
+    name: "{{ item }}"
+    state: present
   with_items:
-    - "{{ openntpd_prerequisites_apt_repository_repos }}"
-
-- name: install package dependencies
-  apt: >
-    name="{{ item }}"
-    update_cache="{{ openntpd_prerequisites_apt_update_cache|default(omit) }}"
-    cache_valid_time="{{ openntpd_prerequisites_apt_cache_valid_time|default(omit) }}"
-    state="{{ openntpd_prerequisites_apt_state }}"
-  with_items:
-    - "{{ openntpd_prerequisites_apt_packages }}"
+    - "{{ openntpd_pre_package_list }}"

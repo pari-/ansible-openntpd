@@ -1,7 +1,19 @@
 ---
 
 - hosts: "{{ hosts_group | default('all') }}"
-  vars_files:
-    - 'example-vars.yml'
+
+  vars:
+    openntpd_config_options:
+      listen_on:
+        any:
+          address: "*"
+      servers:
+        ptbtim1.ptb.de:
+          address: "ptbtime1.ptb.de"
+        ptbtime2.ptb.de:
+          address: "ptbtime2.ptb.de"
+        ptbtime3.ptb.de:
+          address: "ptbtime3.ptb.de"
+
   roles:
-    - "{{ role_name | default('ansible-openntpd') }}"
+    - { role: "{{ role_name | default('ansible-openntpd') }}", tags: ['openntpd'] }

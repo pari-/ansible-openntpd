@@ -1,11 +1,30 @@
 ---
 
-- name: install packages
-  apt: >
-    name="{{ item }}"
-    update_cache="{{ openntpd_install_apt_update_cache|default(omit) }}"
-    cache_valid_time="{{ openntpd_install_apt_cache_valid_time|default(omit) }}"
-    state="{{ openntpd_install_apt_state }}"
-    default_release="{{ openntpd_install_apt_default_release }}"
+- name: add additional apt keys
+  apt_key:
+    id: "{{ item.key.id | default(omit) }}"
+    url: "{{ item.key.url | default(omit) }}"
+    keyserver: "{{ item.key.keyserver | default(omit) }}"
+    validate_certs: "{{ item.key.validate_certs | default(omit) }}"
+    state: "present"
+  when: item.key is defined and item.key and (item.key.id is defined and item.key.id or item.key.url is defined and item.key.url)
   with_items:
-    - "{{ openntpd_install_apt_packages }}"
+    - "{{ openntpd_repo_list }}"
+
+- name: add additional apt repositories
+  apt_repository:
+    repo: "{{ item.repo }}"
+    state: "present"
+  when: item.repo is defined and item.repo
+  with_items:
+    - "{{ openntpd_repo_list }}"
+
+- name: install packages
+  apt:
+    name: "{{ item }}"
+    update_cache: "{{ openntpd_update_cache|default(omit) }}"
+    cache_valid_time: "{{ openntpd_cache_valid_time|default(omit) }}"
+    state: "present"
+    default_release: "{{ openntpd_default_release|default(omit) }}"
+  with_items:
+    - "{{ openntpd_package_list }}"

@@ -1,38 +1,27 @@
 ---
-#
-# prerquisites
-#
-openntpd_prerequisites_supported_distribution_releases:
-  - "jessie"
-openntpd_prerequisites_apt_repository_repos:
-  - "deb http://ftp.debian.org/debian jessie-backports main"
-openntpd_prerequisites_apt_repository_state: "present"
-openntpd_prerequisites_apt_packages: []
-openntpd_prerequisites_apt_state: "present"
-openntpd_prerequisites_apt_update_cache: "yes"
-openntpd_prerequisites_apt_cache_valid_time: 3600
 
-#
-# install
-#
-openntpd_install_apt_packages:
-  - "openntpd"
-openntpd_install_apt_state: "present"
-openntpd_install_apt_update_cache: "yes"
-openntpd_install_apt_cache_valid_time: 3600
-openntpd_install_apt_default_release: "jessie-backports"
-
-#
-# configure
-#
-openntpd_configure_template_dest: "/etc/openntpd/ntpd.conf"
-openntpd_configure_service_name: "openntpd"
-openntpd_configure_config_defaults:
+openntpd_cache_valid_time: 3600
+openntpd_config_file: "/etc/openntpd/ntpd.conf"
+openntpd_config_options: {}
+openntpd_config_options_defaults:
   weight:
     server: 1
     servers: 1
     sensor: 1
   rtable: 253
   correction: 0
-  refid: none
+  refid: "none"
   stratum: 1
+openntpd_default_release: "jessie-backports"
+openntpd_package_list:
+  - "openntpd"
+openntpd_pre_default_release: "jessie"
+openntpd_pre_package_list:
+  - "apt-transport-https"
+  - "ca-certificates"
+openntpd_repo_list:
+  - repo: "deb http://ftp.debian.org/debian jessie-backports main"
+openntpd_service_name: "openntpd"
+openntpd_supported_distro_list:
+  - "jessie"
+openntpd_update_cache: "yes"

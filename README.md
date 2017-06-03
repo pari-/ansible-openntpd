@@ -1,141 +1,76 @@
 # openntpd
 
+[![Build Status](https://travis-ci.org/pari-/ansible-openntpd.svg?branch=master)](https://travis-ci.org/pari-/ansible-openntpd)
+
 An Ansible role which installs and configures OpenNTPd
+
+<!-- toc -->
+
+- [Requirements](#requirements)
+- [Example](#example)
+- [Role Variables](#role-variables)
+- [Dependencies](#dependencies)
+- [License](#license)
+- [Author Information](#author-information)
+
+<!-- tocstop -->
 
 ## Requirements
 
 Currently this role is developed for and tested on Debian GNU/Linux (release: jessie). It is assumed to work on other Debian distributions as well.
 
-Ansible version in use for development: 2.2.0
+Ansible version compatibility:
+
+- __2.3.1.0__ (current version in use for development of this role) 
+- 2.2.3.0
+- 2.1.6.0
+- 2.0.2.0
 
 ## Example
 
 ```yaml
-- hosts: openntpd-servers
-  roles:
-     - { role: openntpd }
-```
+---
 
-In addition to that, you'll have to supply an `openntpd_configure_config`-dict, though (see below).
+- hosts: "{{ hosts_group | default('all') }}"
+
+  vars:
+    openntpd_config_options:
+      listen_on:
+        any:
+          address: "*"
+      servers:
+        ptbtim1.ptb.de:
+          address: "ptbtime1.ptb.de"
+        ptbtime2.ptb.de:
+          address: "ptbtime2.ptb.de"
+        ptbtime3.ptb.de:
+          address: "ptbtime3.ptb.de"
+
+  roles:
+    - { role: "{{ role_name | default('ansible-openntpd') }}", tags: ['openntpd'] }
+
+```
 
 ## Role Variables
 
-Available variables are listed below, along with default values (see defaults/main.yml):
+Available variables are listed below, along with default values (see defaults/main.yml). They're generally prefixed with `openntpd_` (which I deliberately leave out here for better formatting).
 
-- `openntpd_configure_config_defaults`
-
-  > Sane defaults which are applied to the configuration options in `openntpd_configure_config`
-  >
-  >
-
-```yaml
-openntpd_configure_config_defaults:
-  weight:
-    server: 1
-    servers: 1
-    sensor: 1
-  rtable: 253
-  correction: 0
-  refid: none
-  stratum: 1
-```
-
-- `openntpd_configure_config`
-
-  > Main configuration dict, for an example - see the YAML below:
-  >
-  >
-
-```yaml
-openntpd_configure_config:
-  listen_on:
-    localhost:
-      address: "127.0.0.1"
-    all:
-      address: "*"
-      rtable: 4
-  servers:
-    ptbtim1.ptb.de:
-      address: "ptbtime1.ptb.de"
-    ptbtime2.ptb.de:
-      address: "ptbtime2.ptb.de"
-    ptbtime3.ptb.de:
-      address: "ptbtime3.ptb.de"
-      weight: 3
-  sensors:
-    mySensor1:
-      device: "nmea0"
-      correction: 70000
-      refid: "GPS"
-      stratum: 2
-    mySensor2:
-      device: "*"
-```
-
-### Role Internals
-
-#### prerquisites
-
-- `openntpd_prerequisites_supported_distribution_releases`
-> A list of distribution releases this role supports.
->
-> `['jessie']`
-
-- `openntpd_prerequisites_apt_update_cache`
-
-> Run the equivalent of apt-get update before the operation.
->
-> `"yes"`
-
-- `openntpd_prerequisites_apt_cache_valid_time`
-
-> Update the apt cache if its older than the set value.
->
-> `"3600"`
-
-- `openntpd_prerequisites_package_list`
-
-> The list of packages to be prerequisitesed.
->
-> `[]`
-
-#### install
-
-- `openntpd_install_apt_update_cache`
-
-> Run the equivalent of apt-get update before the operation.
->
-> `"yes"`
-
-- `openntpd_install_apt_cache_valid_time`
-
-> Update the apt cache if its older than the set value.
->
-> `"3600"`
-
-- `openntpd_install_package_list`
-
-> The list of packages to be installed.
->
-> `['openntpd']`
-
-#### configure
-
-- `openntpd_configure_template_dest`
-
-  > Path of OpenNTPd's configuration file.
-  >
-  > `"/etc/openntpd/ntpd.conf"`
-
-- `openntpd_configure_service_name`
-
-  > Name of the OpenNTPd service.
-  >
-  > `"openntpd"`
+variable | default | notes
+-------- | ------- | -----
+`cache_valid_time` | `3600` | `Update the apt cache if its older than the set value (in seconds)`
+`config_file` | `/etc/openntpd/ntpd.conf` | `Absolute path to openntpd's configuration file`
+`default_release` | `jessie-backports` | `The default release to install packages from`
+`package_list` | `['openntpd']` | `The list of packages to be installed`
+`pre_default_release` | `{{ openntpd_default_release }}` | `The default release to install packages (pre_package_list) from`
+`pre_package_list` | `['apt-transport-https','ca-certificates']` | `The list of prerequisite packages to be installed`
+`repo_list[0]['repo']` | `deb http://ftp.debian.org/debian jessie-backports main` | `Source string for the repositories`
+`service_name` | `openntpd` | `Name of the (openntpd) service`
+`supported_distro_list` | `['jessie']` | `A list of distribution releases this role supports`
+`update_cache` | `yes` | `Run the equivalent of apt-get update before the operation`
 
 ## Dependencies
 
-None.
+None
 
 ## License
 
