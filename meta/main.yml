@@ -3,10 +3,14 @@
 galaxy_info:
   author: "Patrick Ringl"
   description: "An Ansible role which installs and configures OpenNTPd"
-  license: "MIT"
-  min_ansible_version: ""
+  dependencies: []
   galaxy_tags:
     - "ntp"
     - "ntpd"
     - "openntpd"
-  dependencies: []
+  license: "MIT"
+  min_ansible_version: "2.0.2.0"
+  platforms:
+    - name: "Debian"
+      versions:
+        - "jessie"
