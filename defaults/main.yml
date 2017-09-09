@@ -12,16 +12,15 @@ openntpd_config_options_defaults:
   correction: 0
   refid: "none"
   stratum: 1
-openntpd_default_release: "jessie-backports"
+openntpd_default_release: "{{ ansible_distribution_release|lower }}"
 openntpd_package_list:
   - "openntpd"
-openntpd_pre_default_release: "jessie"
+openntpd_pre_default_release: "{{ openntpd_default_release }}"
 openntpd_pre_package_list:
   - "apt-transport-https"
   - "ca-certificates"
-openntpd_repo_list:
-  - repo: "deb http://ftp.debian.org/debian jessie-backports main"
+openntpd_repo_list: []
 openntpd_service_name: "openntpd"
 openntpd_supported_distro_list:
-  - "jessie"
+  - "stretch"
 openntpd_update_cache: "yes"

@@ -1,7 +1,6 @@
 ---
 
-- hosts: "{{ hosts_group | default('all') }}"
-
+- hosts: "all"
   vars:
     openntpd_config_options:
       listen_on:
@@ -14,6 +13,7 @@
           address: "ptbtime2.ptb.de"
         ptbtime3.ptb.de:
           address: "ptbtime3.ptb.de"
-
   roles:
-    - { role: "{{ role_name | default('ansible-openntpd') }}", tags: ['openntpd'] }
+    - role: "ansible-openntpd"
+      tags:
+        - "openntpd"

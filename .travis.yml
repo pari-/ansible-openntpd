@@ -13,16 +13,21 @@ branches:
     - "master"
 
 before_install:
+  - curl -fsSL https://download.docker.com/linux/ubuntu/gpg | sudo apt-key add -
+  - sudo add-apt-repository "deb [arch=amd64] https://download.docker.com/linux/ubuntu $(lsb_release -cs) stable"
   - sudo apt-get update
-  - sudo apt-get -y -o Dpkg::Options::="--force-confnew" install docker-engine
+  - sudo apt-get -y install docker-ce
 
 env:
-  - ANSIBLE_VERSION=2.3.1.0
-  - ANSIBLE_VERSION=2.2.3.0
-  - ANSIBLE_VERSION=2.1.6.0
-  - ANSIBLE_VERSION=2.0.2.0
+  global:
+    - IMAGE=irap/docker-debian-ansible:stretch
+  matrix:
+    - ANSIBLE_VERSION=2.3.2.0
+    - ANSIBLE_VERSION=2.2.3.0
+    - ANSIBLE_VERSION=2.1.6.0
+    - ANSIBLE_VERSION=2.0.2.0
 
 script:
-  - wget -O ${PWD}/run.sh https://raw.githubusercontent.com/pari-/docker-debian8-ansible/master/run.sh
+  - wget -O ${PWD}/run.sh https://raw.githubusercontent.com/pari-/docker-debian-ansible/master/run.sh
   - chmod +x ${PWD}/run.sh
   - ${PWD}/run.sh

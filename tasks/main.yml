@@ -1,10 +1,13 @@
 ---
 
-- include: prerequisites.yml
-  tags: [ 'prerequisites']
+- include: "prerequisites.yml"
+  tags:
+    - "prerequisites"
 
-- include: install.yml
-  tags: [ 'install']
+- include: "install.yml"
+  tags:
+    - "install"
 
-- include: configure.yml
-  tags: [ 'configure']
+- include: "configure.yml"
+  tags:
+    - "configure"

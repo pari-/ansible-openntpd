@@ -9,6 +9,6 @@
   apt:
     default_release: "{{ openntpd_pre_default_release }}"
     name: "{{ item }}"
-    state: present
+    state: "present"
   with_items:
     - "{{ openntpd_pre_package_list }}"

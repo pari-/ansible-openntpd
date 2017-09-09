@@ -4,30 +4,30 @@ HN = Pathname.new(Dir.pwd).basename.to_s.gsub('_','-');
 
 VAGRANTFILE_API_VERSION = "2"
 
-VM_MEM = 1024
-VM_CPUS = 1
 VM_COUNT = 1
-VM_NAME = "vm"
-VM_GROUP_NAME = "vm"
+VM_CPUS = 1
+VM_MEM = 1024
+VM_BASE_NAME = "vm"
+VM_GROUP_NAME = "group"
 
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..VM_COUNT).each do |i|
-    config.vm.define "#{VM_NAME}#{i}" do |subconfig|
-      subconfig.vm.box = ENV['VAGRANT_CONFIG_VM_BOX'] || 'parallels/debian-8.8'
+    config.vm.define "#{VM_BASE_NAME}#{i}" do |subconfig|
+      subconfig.vm.box = ENV['VAGRANT_CONFIG_VM_BOX'] || 'parallels/debian-9.1'
       subconfig.vm.hostname = (i == 1) ? HN : HN + i.to_s
 
       subconfig.vm.provider "parallels" do |prl|
-        prl.memory = VM_MEM
         prl.cpus = VM_CPUS
+        prl.memory = VM_MEM
       end
 
       subconfig.vm.provision :ansible do |ansible|
+        ansible.groups = {
+          "#{VM_GROUP_NAME}" => Array(1..VM_COUNT).map { |j| "#{VM_BASE_NAME}#{j}" }
+        }
         ansible.playbook = "test.yml"
         ansible.sudo = true
-#	ansible.tags = 'configure'
-#       ansible.groups = {
-#         "#{VM_NAME}" => "[#{VM_GROUP_NAME}]"
-#       }
+        ansible.tags = "all"
       end
     end
   end
