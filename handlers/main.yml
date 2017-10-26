@@ -1,6 +1,6 @@
 ---
 
-- name: restart openntpd
+- name: "restart openntpd"
   service:
     name: "{{ openntpd_service_name }}"
     state: "restarted"

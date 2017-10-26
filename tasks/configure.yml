@@ -1,14 +1,15 @@
 ---
 
-- name: generate configuration file
+- name: "generate configuration file"
   template:
     src: "etc/openntpd/ntpd.conf.j2"
     dest: "{{ openntpd_config_file }}"
   notify:
     - "restart openntpd"
 
-- name: ensure the service is started and enabled at boot
+- name: "ensure the service is started and enabled at boot"
   service:
     name: "{{ openntpd_service_name }}"
     state: "started"
     enabled: "yes"
+    use: "systemd"

@@ -13,7 +13,7 @@ VM_GROUP_NAME = "group"
 Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
   (1..VM_COUNT).each do |i|
     config.vm.define "#{VM_BASE_NAME}#{i}" do |subconfig|
-      subconfig.vm.box = ENV['VAGRANT_CONFIG_VM_BOX'] || 'parallels/debian-9.1'
+      subconfig.vm.box = ENV['VAGRANT_CONFIG_VM_BOX'] || 'parallels/debian-9.2'
       subconfig.vm.hostname = (i == 1) ? HN : HN + i.to_s
 
       subconfig.vm.provider "parallels" do |prl|
@@ -22,12 +22,16 @@ Vagrant.configure(VAGRANTFILE_API_VERSION) do |config|
       end
 
       subconfig.vm.provision :ansible do |ansible|
+        if File.exists?("requirements.yml")
+          ansible.galaxy_role_file = "requirements.yml"
+        end
         ansible.groups = {
           "#{VM_GROUP_NAME}" => Array(1..VM_COUNT).map { |j| "#{VM_BASE_NAME}#{j}" }
         }
+        ansible.become = true
+        ansible.compatibility_mode = "2.0"
         ansible.playbook = "test.yml"
-        ansible.sudo = true
-        ansible.tags = "all"
+        ansible.tags = ENV['VAGRANT_ANSIBLE_TAGS'] || 'all'
       end
     end
   end
