@@ -17,3 +17,8 @@
     - role: "ansible-openntpd"
       tags:
         - "openntpd"
+  post_tasks:
+    - block:
+        - include: "tests/test_ntpctl_show_all_data.yml"
+      tags:
+        - "tests"

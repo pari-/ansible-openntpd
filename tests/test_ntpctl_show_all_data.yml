@@ -1,0 +1,12 @@
+---
+
+- command: "ntpctl -s all"
+  changed_when: False
+  ignore_errors: True
+  register: "_result"
+
+- name: "fail when openntpd is unresponsive"
+  fail:
+    msg: "openntpd is unresponsive :-("
+  when:
+    - "_result|failed"
