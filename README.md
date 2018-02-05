@@ -17,7 +17,7 @@ An Ansible role which installs and configures OpenNTPd
 
 ## Requirements
 
-Currently this role is developed for and tested on Debian GNU/Linux (release: jessie). It is assumed to work on other Debian distributions as well.
+Currently this role is developed for and tested on Debian GNU/Linux (release: stretch). It is assumed to work on other Debian distributions as well.
 
 Ansible version compatibility:
 
